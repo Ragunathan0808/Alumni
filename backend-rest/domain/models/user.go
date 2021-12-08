@@ -3,11 +3,11 @@ package models
 type UserRepo interface {
 	Create(*User) (*User, error)
 
-	DeleteUserByID(uint) error
+	DeleteByID(uint) error
 
 	FindByID(uint) (*User, error)
-	FindByMail(uint) (*User, error)
-	FindByDesignation(uint) ([]*User, error)
+	FindByMail(string) (*User, error)
+	FindByDesignation(string) ([]*User, error)
 	FindByBatch(uint) ([]*User, error)
 
 	UpdatePassword(uint, string) error
