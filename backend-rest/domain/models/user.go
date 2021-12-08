@@ -10,7 +10,7 @@ type UserRepo interface {
 	FindByDesignation(string) ([]*User, error)
 	FindByBatch(uint) ([]*User, error)
 
-	UpdatePassword(uint, string) error
+	UpdatePassword(uint, string, string) error
 	UpdateVerify(uint, bool) error
 	UpdateActive(uint, bool) error
 	UpdateName(uint, string) error
