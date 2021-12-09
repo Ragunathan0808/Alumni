@@ -12,7 +12,6 @@ type User struct {
 
 	MailID       string `json:"mailID" gorm:"unique;not null"`
 	PasswordHash string `json:"passwordHash" gorm:"not null"`
-	RandomHash   string `json:"randomHash" gorm:"not null"`
 	Verified     bool   `json:"verified" gorm:"default:false"`
 	Active       bool   `json:"active" gorm:"default:false"`
 	Type         string `json:"type" gorm:"default:user"`
