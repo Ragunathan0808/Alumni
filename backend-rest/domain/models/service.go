@@ -1,9 +1,9 @@
 package models
 
 type AuthService interface {
-	LogIn(string, string) (string, error)
-	SignUp(string, string) (string, error)
-	RemoveAccount(uint) error
+	LogIn(*User) (string, error)
+	SignUp(*User) error
+	RemoveAccount(*User) error
 }
 
 type TokenService interface {
