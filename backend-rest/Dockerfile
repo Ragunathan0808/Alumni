@@ -20,5 +20,4 @@ COPY . .
 COPY .env .
 
 # Build and run the app
-RUN go build -o app
-CMD ["./app"]
+CMD ["reflex -r '\.go$$' -s -- sh -c 'go run ./'"]

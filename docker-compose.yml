@@ -28,6 +28,9 @@ services:
       - "8080:8080"
     expose:
       - "8080"
+    volumes:
+      - ./backend-rest:/go/src/app
+    command: reflex -r "\.go$$" -s -- sh -c "go run ./"
     depends_on:
       - postgres
       - redis
