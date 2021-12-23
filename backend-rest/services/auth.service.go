@@ -22,6 +22,7 @@ func NewDefaultAuthService(ts models.TokenService, ur models.UserRepo) models.Au
 }
 
 // Login authenticates user and returns token
+// Used by all Users
 func (as *DefaultAuthService) LogIn(user *models.User) (string, error) {
 	dbUser, err := as.ur.FindByMail(user.MailID)
 	if err != nil {
@@ -29,6 +30,12 @@ func (as *DefaultAuthService) LogIn(user *models.User) (string, error) {
 	}
 	if dbUser == nil {
 		return "", apperrors.NewNotFoundError("Email not found")
+	}
+	if !dbUser.Active {
+		return "", apperrors.NewUnauthorizedError("Account not activated, contact Admin")
+	}
+	if !dbUser.Verified {
+		return "", apperrors.NewUnauthorizedError("Account not verified")
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(dbUser.PasswordHash), []byte(user.PasswordHash))
 	if err != nil {
@@ -39,6 +46,7 @@ func (as *DefaultAuthService) LogIn(user *models.User) (string, error) {
 }
 
 // SignUp creates a new user
+// Create default user(student) account
 func (as *DefaultAuthService) SignUp(user *models.User) error {
 	/*  generate password hash with bcrypt
 	 	Update user password hash
@@ -54,7 +62,15 @@ func (as *DefaultAuthService) SignUp(user *models.User) error {
 }
 
 // RemoveAccount removes user account
+// User by user (self)  and admin
 func (as *DefaultAuthService) RemoveAccount(user *models.User) error {
 	err := as.ur.DeleteByID(user.ID)
+	return err
+}
+
+// Update User Active status (account approval)
+// used only by admin
+func (as *DefaultAuthService) UpdateActive(user *models.User, isActive bool) error {
+	err := as.ur.UpdateActive(user.ID, isActive)
 	return err
 }
