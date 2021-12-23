@@ -15,3 +15,8 @@ type UserRepo interface {
 	UpdateActive(uint, bool) error
 	UpdateName(uint, string) error
 }
+
+type OTPRepo interface {
+	Create(string, string) error
+	Find(string) (string, error)
+}
