@@ -10,15 +10,14 @@ type ginAuthController struct {
 	as models.AuthService
 }
 
-func AddGinAuthController(as models.AuthService, router *gin.Engine) {
+func AddGinAuthController(as models.AuthService, mw *middleware, router *gin.Engine) {
 	sub := router.Group("/auth")
 	auth := &ginAuthController{
 		as: as,
 	}
-
 	sub.POST("/login", auth.Login)
 	sub.POST("/signup", auth.SignUp)
-	sub.DELETE("/deactivate", auth.Deactivate)
+	sub.DELETE("/deactivate", auth.Deactivate).Use(mw.userOrAdmin())
 
 }
 
