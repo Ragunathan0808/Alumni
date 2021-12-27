@@ -22,14 +22,14 @@ services:
       - database_redis:/data
 
   backend-rest:
-    build: ./backend-rest
+    build: .
     image: backend-rest
     ports:
       - "8080:8080"
     expose:
       - "8080"
     volumes:
-      - ./backend-rest:/go/src/app
+      - .:/go/src/app
     command: reflex -r "\.go$$" -s -- sh -c "go run ./"
     depends_on:
       - postgres

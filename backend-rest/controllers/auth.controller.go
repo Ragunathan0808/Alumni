@@ -10,7 +10,7 @@ type ginAuthController struct {
 	as models.AuthService
 }
 
-func AddGinAuthController(as models.AuthService, mw *middleware, router *gin.Engine) {
+func AddGinAuthController(as models.AuthService, mw *AuthMiddleware, router *gin.Engine) {
 	sub := router.Group("/auth")
 	auth := &ginAuthController{
 		as: as,
@@ -32,7 +32,7 @@ func (auth *ginAuthController) Login(c *gin.Context) {
 	}
 	c.SetCookie("AUTH", token, 3600, "/", "", false, false)
 	c.Header("AUTH", token)
-	c.JSON(200, gin.H{"AUTH": token})
+	c.JSON(200, gin.H{"status": "ok", "AUTH": token})
 }
 
 func (auth *ginAuthController) SignUp(c *gin.Context) {

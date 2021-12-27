@@ -65,6 +65,15 @@ func (r *defaultUserRepo) FindByBatch(batch uint) ([]*models.User, error) {
 	return users, nil
 }
 
+func (r *defaultUserRepo) Find(user *models.User) ([]*models.User, error) {
+	users := []*models.User{}
+	result := r.db.Where(user).Find(&users)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return users, nil
+}
+
 func (r *defaultUserRepo) UpdatePassword(userID uint, passwordHash string, randomHash string) error {
 	result := r.db.Model(&models.User{ID: userID}).Updates(&models.User{PasswordHash: passwordHash})
 	return result.Error

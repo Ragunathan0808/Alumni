@@ -6,11 +6,15 @@ import (
 	"github.com/kabi175/alumini-app-backend/domain/models"
 )
 
-type middleware struct {
+type AuthMiddleware struct {
 	tokenService models.TokenService
 }
 
-func (m *middleware) userOnly() gin.HandlerFunc {
+func NewAuthMiddleware(tokenService models.TokenService) *AuthMiddleware {
+	return &AuthMiddleware{tokenService: tokenService}
+}
+
+func (m *AuthMiddleware) userOnly() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("AUTH")
 		if token == "" {
@@ -35,7 +39,7 @@ func (m *middleware) userOnly() gin.HandlerFunc {
 	}
 }
 
-func (m *middleware) adminOnly() gin.HandlerFunc {
+func (m *AuthMiddleware) adminOnly() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("AUTH")
 		if token == "" {
@@ -60,7 +64,7 @@ func (m *middleware) adminOnly() gin.HandlerFunc {
 	}
 }
 
-func (m *middleware) userOrAdmin() gin.HandlerFunc {
+func (m *AuthMiddleware) userOrAdmin() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("AUTH")
 		if token == "" {

@@ -28,15 +28,17 @@ func (as *DefaultAuthService) LogIn(user *models.User) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if dbUser == nil {
+	if dbUser.MailID != user.MailID {
 		return "", apperrors.NewNotFoundError("Email not found")
 	}
-	if !dbUser.Active {
-		return "", apperrors.NewUnauthorizedError("Account not activated, contact Admin")
-	}
-	if !dbUser.Verified {
-		return "", apperrors.NewUnauthorizedError("Account not verified")
-	}
+	/*
+		if !dbUser.Active {
+			return "", apperrors.NewUnauthorizedError("Account not activated, contact Admin")
+		}
+		if !dbUser.Verified {
+			return "", apperrors.NewUnauthorizedError("Account not verified")
+		}
+	*/
 	err = bcrypt.CompareHashAndPassword([]byte(dbUser.PasswordHash), []byte(user.PasswordHash))
 	if err != nil {
 		return "", apperrors.NewUnauthorizedError("Invalid password")

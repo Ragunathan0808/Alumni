@@ -17,6 +17,11 @@ func (as *DefaultUserService) GetByID(userID uint) (*models.User, error) {
 	return user, err
 }
 
+func (as *DefaultUserService) GetUser(user *models.User) ([]*models.User, error) {
+	users, err := as.ur.Find(user)
+	return users, err
+}
+
 func (as *DefaultUserService) GetByEmail(email string) (*models.User, error) {
 	user, err := as.ur.FindByMail(email)
 	return user, err

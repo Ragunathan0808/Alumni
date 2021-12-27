@@ -9,6 +9,7 @@ type UserRepo interface {
 	FindByMail(string) (*User, error)
 	FindByDesignation(string) ([]*User, error)
 	FindByBatch(uint) ([]*User, error)
+	Find(*User) ([]*User, error)
 
 	UpdatePassword(uint, string, string) error
 	UpdateVerify(uint, bool) error

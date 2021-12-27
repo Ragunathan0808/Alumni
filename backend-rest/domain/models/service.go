@@ -18,6 +18,7 @@ type UserService interface {
 	GetByEmail(string) (*User, error)
 	GetByDesignation(string) ([]*User, error)
 	GetByBatch(uint) ([]*User, error)
+	GetUser(*User) ([]*User, error)
 }
 
 type EmailService interface {

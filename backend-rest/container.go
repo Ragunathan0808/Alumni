@@ -63,10 +63,25 @@ func buildContainer() *dig.Container {
 		log.Fatal(err)
 	}
 
-	err = container.Invoke(controllers.AddGinAuthController)
+	err = container.Provide(controllers.NewAuthMiddleware)
 	if err != nil {
-
 		log.Fatal(err)
 	}
+
+	err = container.Provide(service.NewDefaultUserService)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = container.Invoke(controllers.AddGinAuthController)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = container.Invoke(controllers.AddGinUserController)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	return container
 }
