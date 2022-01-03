@@ -1,91 +1,83 @@
 import React from 'react';
-import { View, Text, TextField, Button } from 'react-native-ui-lib';
+import { View, Text } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import tailwind from 'tailwind-rn';
+import { setAuth } from '../store/auth';
+
 import { useNavigation } from '@react-navigation/native';
-import { AuthScreenProp } from './index';
-import { useSelector, useDispatch } from 'react-redux';
-import { signUp } from '../store/auth';
-import { RootState } from '../store';
+import { AuthNavParamList } from '.';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-const Signup = () => {
-	const navigation = useNavigation<AuthScreenProp>();
+function SignUp() {
 	const dispatch = useDispatch();
-	const [username, setUsername] = React.useState<string>('');
-	const [password, setPassword] = React.useState<string>('');
+	const navigation =
+		useNavigation<NativeStackScreenProps<AuthNavParamList>['navigation']>();
+
+	const signup = (email: string, studId: string, password: string) => {
+		const username = 'kabi';
+		const token = 'dummy token';
+		dispatch(setAuth({ username, email, token }));
+	};
+
 	const [email, setEmail] = React.useState<string>('');
-	const auth = useSelector((state: RootState) => state.auth);
+	const [studId, setStudId] = React.useState<string>('');
+	const [password, setPassword] = React.useState<string>('');
 	return (
-		<View flex center>
-			<TextField
-				placeholder='Name'
-				textColor='white'
-				tintColor='white'
-				textInputStyle={{
-					color: 'white',
-					fontSize: 16,
-					fontWeight: 'bold',
-					padding: 10,
-					borderBottomWidth: 1,
-					borderBottomColor: 'white',
-				}}
-				width={300}
-				onChangeText={(text: any) => setUsername(text)}
-			/>
-			<TextField
-				placeholder='Email'
-				textColor='white'
-				tintColor='white'
-				textInputStyle={{
-					color: 'white',
-					fontSize: 16,
-					fontWeight: 'bold',
-					padding: 10,
-					borderBottomWidth: 1,
-					borderBottomColor: 'white',
-				}}
-				width={300}
-				onChangeText={(text: any) => setEmail(text)}
-			/>
-
-			<TextField
-				placeholder='Password'
-				textColor='white'
-				tintColor='white'
-				textInputStyle={{
-					color: 'white',
-					fontSize: 16,
-					fontWeight: 'bold',
-					padding: 10,
-					borderBottomWidth: 1,
-					borderBottomColor: 'white',
-				}}
-				width={300}
-				onChangeText={(text: any) => setPassword(text)}
-			/>
-			{auth.error && <Text color='red'> {auth.error} </Text>}
-			<Button
-				label='Sign Up'
-				labelStyle={{
-					color: 'white',
-					fontSize: 16,
-					fontWeight: 'bold',
-				}}
-				style={{
-					backgroundColor: '#00bcd4',
-					borderRadius: 10,
-					marginTop: 20,
-				}}
-				onPress={() => dispatch(signUp(username, password, email))}
-			/>
-			<Text
-				blue40
-				center
-				marginT-20
-				onPress={() => navigation.navigate('signin')}
+		<SafeAreaView>
+			<View
+				style={tailwind(
+					'flex justify-center items-center w-full h-full'
+				)}
 			>
-				Already have an account?
-			</Text>
-		</View>
+				<Text style={tailwind('text-xl font-bold text-indigo-700 p-5')}>
+					Welcome, Create Your Profile
+				</Text>
+				<View
+					style={tailwind('flex justify-center items-center w-full')}
+				>
+					<TextInput
+						mode={'outlined'}
+						autoComplete={'email'}
+						style={tailwind('w-2/3')}
+						label='Email'
+						value={email}
+						onChangeText={(val) => setEmail(val)}
+					/>
+					<TextInput
+						mode={'outlined'}
+						autoComplete={''}
+						style={tailwind('w-2/3 m-3')}
+						label='Student ID'
+						value={studId}
+						onChangeText={(val) => setStudId(val)}
+					/>
+					<TextInput
+						mode={'outlined'}
+						autoComplete={'password'}
+						style={tailwind('w-2/3')}
+						label='Password'
+						value={password}
+						onChangeText={(val) => setPassword(val)}
+					/>
+				</View>
+				<Button
+					mode='contained'
+					style={tailwind('m-3')}
+					onPress={() => signup(email, studId, password)}
+				>
+					Sign Up
+				</Button>
+				<Text
+					style={tailwind('text-blue-600')}
+					onPress={() => navigation.navigate('LogIn')}
+				>
+					Alreday have an account?
+				</Text>
+			</View>
+		</SafeAreaView>
 	);
-};
+}
 
-export default Signup;
+export default SignUp;

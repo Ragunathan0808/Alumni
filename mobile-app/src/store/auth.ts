@@ -2,30 +2,30 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface AuthState {
 	username?: string;
-	token?: string;
 	email?: string;
+	token?: string;
 }
 
 const initialState: AuthState = {};
 
-export const counterSlice = createSlice({
+export const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
 		setAuth: (state, action: PayloadAction<AuthState>) => {
 			state.username = action.payload.username;
-			state.token = action.payload.token;
 			state.email = action.payload.email;
+			state.token = action.payload.token;
 		},
 		clearAuth: (state) => {
 			state.username = undefined;
-			state.token = undefined;
 			state.email = undefined;
+			state.token = undefined;
 		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { setAuth, clearAuth } = counterSlice.actions;
+export const { setAuth, clearAuth } = authSlice.actions;
 
-export default counterSlice.reducer;
+export default authSlice.reducer;
